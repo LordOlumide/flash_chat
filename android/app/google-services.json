@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "630452592006",
+    "project_id": "flash-chat-5f0f0",
+    "storage_bucket": "flash-chat-5f0f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630452592006:android:d0ab42193e55ab80ede007",
+        "android_client_info": {
+          "package_name": "olumide.com.flash_chat_reloaded"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630452592006-lblpqd2p3r1buqnevvieuq5e9q6253vo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtyII2HIaeg4hzvxxZBVp14DBKvEyHD2E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630452592006-lblpqd2p3r1buqnevvieuq5e9q6253vo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

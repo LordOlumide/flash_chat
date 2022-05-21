@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flash_chat/components/custom_rounded_button.dart';
 import 'package:flash_chat/constants.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 class RegistrationScreen extends StatefulWidget {
   static String screen_id = "registration_screen";
 
