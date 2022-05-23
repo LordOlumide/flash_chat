@@ -3,6 +3,7 @@ import 'package:flash_chat/components/custom_rounded_button.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'chat_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static String screen_id = "login_screen";
@@ -68,8 +69,22 @@ class _LoginScreenState extends State<LoginScreen> {
               customRoundedButton(
                 text: 'Log In',
                 color: Colors.lightBlueAccent,
-                onPressed: () {
-                  //Implement login functionality.
+                onPressed: () async {
+                  setState((){
+                    _busyLoading = true;
+                  });
+                  try {
+                    final user = await _auth.signInWithEmailAndPassword(
+                        email: email, password: password);
+                    if (user != null) {
+                      Navigator.pushNamed(context, ChatScreen.screen_id);
+                    }
+                  } catch (e) {
+                    print(e);
+                  }
+                  setState((){
+                    _busyLoading = false;
+                  });
                 },
               ),
             ],
