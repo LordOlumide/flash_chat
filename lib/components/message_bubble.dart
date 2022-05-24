@@ -4,8 +4,9 @@ class MessageBubble extends StatelessWidget {
   final String text;
   final String sender;
   final bool isMe;
+  final String time;
 
-  MessageBubble({this.text, this.sender, this.isMe});
+  MessageBubble({this.text, this.sender, this.isMe, this.time});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class MessageBubble extends StatelessWidget {
             ),
           ),
           Material(
-            elevation: 5.0,
+            elevation: 4.0,
             color: isMe ? Colors.lightBlueAccent : Colors.white,
             borderRadius: isMe ? BorderRadius.only(
               bottomLeft: Radius.circular(30.0),
@@ -42,6 +43,13 @@ class MessageBubble extends StatelessWidget {
                   color: isMe ? Colors.white : Colors.black54,
                 ),
               ),
+            ),
+          ),
+          Text(
+            time,
+            style: TextStyle(
+              fontSize: 10.0,
+              color: Colors.black38,
             ),
           ),
         ],

@@ -68,6 +68,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               SizedBox(
                 height: 24.0,
               ),
+              // TODO: Add home screen
+              // TODO: Add username
               customRoundedButton(
                 text: 'Register',
                 color: Colors.blueAccent,

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'welcome_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flash_chat/components/message_bubble.dart';
+import 'package:intl/intl.dart';
 
 final _firestore = FirebaseFirestore.instance;
 final _auth = FirebaseAuth.instance;
@@ -118,11 +119,11 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class MessagesStream extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('messages').orderBy('timestamp').snapshots(),
+      stream:
+          _firestore.collection('messages').orderBy('timestamp').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
@@ -133,24 +134,35 @@ class MessagesStream extends StatelessWidget {
         }
         List<MessageBubble> messageBubbles = [];
 
+        // TODO: Separate messages by day.
         final messages = snapshot.data.docs.reversed;
         for (var message in messages) {
           Map unitMessage = message.data();
           String text = unitMessage['text'];
           String sender = unitMessage['sender'];
-          bool isMe = false;
 
+          // Sets isMe property
+          bool isMe = false;
           if (sender == loggedInUser.email) {
             isMe = true;
           }
-          messageBubbles.add(
-              MessageBubble(text: text, sender: sender, isMe: isMe)
-          );
+
+          // Gets exact time in HOUR-MINUTE format
+          String hourMinuteTime = '';
+          Timestamp createdAt = unitMessage['timestamp'];
+          DateTime createdAtDateTime = createdAt.toDate();
+          var hourMinuteFormat = DateFormat("jm"); // 'jm' is HOUR-MINUTE format
+          String updatedDt = hourMinuteFormat.format(createdAtDateTime);
+
+          hourMinuteTime = updatedDt; // Example: 12:31 PM
+
+          messageBubbles.add(MessageBubble(
+              text: text, sender: sender, isMe: isMe, time: hourMinuteTime));
         }
         return Expanded(
           child: ListView(
             reverse: true,
-            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 6.0),
             children: messageBubbles,
           ),
         );
