@@ -148,13 +148,11 @@ class MessagesStream extends StatelessWidget {
           }
 
           // Gets exact time in HOUR-MINUTE format
-          String hourMinuteTime = '';
           Timestamp createdAt = unitMessage['timestamp'];
           DateTime createdAtDateTime = createdAt.toDate();
           var hourMinuteFormat = DateFormat("jm"); // 'jm' is HOUR-MINUTE format
-          String updatedDt = hourMinuteFormat.format(createdAtDateTime);
-
-          hourMinuteTime = updatedDt; // Example: 12:31 PM
+          String hourMinuteTime =
+              hourMinuteFormat.format(createdAtDateTime); // Example: 12:31 PM
 
           messageBubbles.add(MessageBubble(
               text: text, sender: sender, isMe: isMe, time: hourMinuteTime));
