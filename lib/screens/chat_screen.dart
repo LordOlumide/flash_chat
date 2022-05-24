@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flash_chat/components/message_bubble.dart';
 
 final _firestore = FirebaseFirestore.instance;
+final _auth = FirebaseAuth.instance;
+User loggedInUser;
 
 class ChatScreen extends StatefulWidget {
   static String screen_id = "chat_screen";
@@ -15,8 +17,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final _auth = FirebaseAuth.instance;
-  User loggedInUser;
   String messageText;
   TextEditingController controller = TextEditingController();
 
@@ -42,13 +42,13 @@ class _ChatScreenState extends State<ChatScreen> {
   //   }
   // }
 
-  void messagesStream() async {
-    await for (var snapshot in _firestore.collection('messages').snapshots()) {
-      for (var message in snapshot.docs) {
-        print(message.data());
-      }
-    }
-  }
+  // void messagesStream() async {
+  //   await for (var snapshot in _firestore.collection('messages').snapshots()) {
+  //     for (var message in snapshot.docs) {
+  //       print(message.data());
+  //     }
+  //   }
+  // }
 
   @override
   void initState() {
@@ -99,6 +99,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       _firestore.collection('messages').add({
                         'text': messageText,
                         'sender': loggedInUser.email,
+                        "timestamp": FieldValue.serverTimestamp(),
                       });
                     },
                     child: Text(
@@ -121,7 +122,7 @@ class MessagesStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('messages').snapshots(),
+      stream: _firestore.collection('messages').orderBy('timestamp').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
@@ -132,18 +133,23 @@ class MessagesStream extends StatelessWidget {
         }
         List<MessageBubble> messageBubbles = [];
 
-        final messages = snapshot.data.docs;
+        final messages = snapshot.data.docs.reversed;
         for (var message in messages) {
           Map unitMessage = message.data();
           String text = unitMessage['text'];
           String sender = unitMessage['sender'];
+          bool isMe = false;
 
+          if (sender == loggedInUser.email) {
+            isMe = true;
+          }
           messageBubbles.add(
-              MessageBubble(text: text, sender: sender)
+              MessageBubble(text: text, sender: sender, isMe: isMe)
           );
         }
         return Expanded(
           child: ListView(
+            reverse: true,
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
             children: messageBubbles,
           ),
