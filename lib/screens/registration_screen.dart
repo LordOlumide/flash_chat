@@ -4,6 +4,7 @@ import 'package:flash_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'chat_screen.dart';
+import 'package:flash_chat/components/push_error_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static String screen_id = "registration_screen";
@@ -68,13 +69,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               SizedBox(
                 height: 24.0,
               ),
-              // TODO: Add home screen
+              // TODO: Add chat selection screen
               // TODO: Add username
               customRoundedButton(
                 text: 'Register',
                 color: Colors.blueAccent,
                 onPressed: () async {
-                  setState((){
+                  setState(() {
                     _busyLoading = true;
                   });
                   try {
@@ -84,7 +85,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       Navigator.pushNamed(context, ChatScreen.screen_id);
                     }
                   } catch (e) {
-                    print(e);
+                    PushErrorScreen(
+                      context: context,
+                      error: e,
+                      screen_id: RegistrationScreen.screen_id,
+                    );
                   }
                   setState(() {
                     _busyLoading = false;

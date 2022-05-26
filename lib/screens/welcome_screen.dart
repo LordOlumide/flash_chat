@@ -3,6 +3,7 @@ import 'package:flash_chat/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flash_chat/components/custom_rounded_button.dart';
+import 'package:flash_chat/components/push_error_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static String screen_id = "welcome_screen";

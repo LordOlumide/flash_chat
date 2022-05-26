@@ -3,6 +3,7 @@ import 'package:flash_chat/components/custom_rounded_button.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:flash_chat/components/push_error_screen.dart';
 import 'chat_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -82,7 +83,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushNamed(context, ChatScreen.screen_id);
                     }
                   } catch (e) {
-                    print(e);
+                    PushErrorScreen(
+                      context: context,
+                      error: e,
+                      screen_id: LoginScreen.screen_id,
+                    );
                   }
                   setState((){
                     _busyLoading = false;
