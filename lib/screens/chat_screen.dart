@@ -138,6 +138,7 @@ class MessagesStream extends StatelessWidget {
         final messages = snapshot.data.docs.reversed;
         for (var message in messages) {
           Map unitMessage = message.data();
+
           String text = unitMessage['text'];
           String sender = unitMessage['sender'];
 
@@ -147,15 +148,10 @@ class MessagesStream extends StatelessWidget {
             isMe = true;
           }
 
-          // Gets exact time in HOUR-MINUTE format
-          Timestamp createdAt = unitMessage['timestamp'];
-          DateTime createdAtDateTime = createdAt.toDate();
-          var hourMinuteFormat = DateFormat("jm"); // 'jm' is HOUR-MINUTE format
-          String hourMinuteTime =
-              hourMinuteFormat.format(createdAtDateTime); // Example: 12:31 PM
+          String exactDisplayTime = getTime(unitMessage);
 
           messageBubbles.add(MessageBubble(
-              text: text, sender: sender, isMe: isMe, time: hourMinuteTime));
+              text: text, sender: sender, isMe: isMe, time: exactDisplayTime));
         }
         return Expanded(
           child: ListView(
@@ -167,4 +163,21 @@ class MessagesStream extends StatelessWidget {
       },
     );
   }
+}
+
+getTime(unitMessage) {
+  // Gets exact time in HOUR-MINUTE format
+  Timestamp createdAt = unitMessage['timestamp'];
+  if (createdAt == null) {
+    return '';
+  }
+  DateTime createdAtDateTime = createdAt.toDate();
+  var dayTimeFormat = DateFormat("yMMMd"); // 'jm' is HOUR-MINUTE format
+  var exactTimeFormat = DateFormat("jm"); // 'jm' is HOUR-MINUTE format
+  String dayDisplayTime =
+      dayTimeFormat.format(createdAtDateTime); // 'May, 26, 2022'
+  String hourMinuteDisplayTime =
+      exactTimeFormat.format(createdAtDateTime); // Example: 12:31 PM
+
+  return '$dayDisplayTime, $hourMinuteDisplayTime';
 }
