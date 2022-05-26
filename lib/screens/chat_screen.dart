@@ -119,6 +119,24 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class MessagesStream extends StatelessWidget {
+
+  getTime(unitMessage) {
+    // Gets exact time in HOUR-MINUTE format
+    Timestamp createdAt = unitMessage['timestamp'];
+    if (createdAt == null) {
+      return '';
+    }
+    DateTime createdAtDateTime = createdAt.toDate();
+    var dayTimeFormat = DateFormat("yMMMd"); // 'jm' is HOUR-MINUTE format
+    var exactTimeFormat = DateFormat("jm"); // 'jm' is HOUR-MINUTE format
+    String dayDisplayTime =
+    dayTimeFormat.format(createdAtDateTime); // 'May, 26, 2022'
+    String hourMinuteDisplayTime =
+    exactTimeFormat.format(createdAtDateTime); // Example: 12:31 PM
+
+    return '$dayDisplayTime, $hourMinuteDisplayTime';
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -163,21 +181,4 @@ class MessagesStream extends StatelessWidget {
       },
     );
   }
-}
-
-getTime(unitMessage) {
-  // Gets exact time in HOUR-MINUTE format
-  Timestamp createdAt = unitMessage['timestamp'];
-  if (createdAt == null) {
-    return '';
-  }
-  DateTime createdAtDateTime = createdAt.toDate();
-  var dayTimeFormat = DateFormat("yMMMd"); // 'jm' is HOUR-MINUTE format
-  var exactTimeFormat = DateFormat("jm"); // 'jm' is HOUR-MINUTE format
-  String dayDisplayTime =
-      dayTimeFormat.format(createdAtDateTime); // 'May, 26, 2022'
-  String hourMinuteDisplayTime =
-      exactTimeFormat.format(createdAtDateTime); // Example: 12:31 PM
-
-  return '$dayDisplayTime, $hourMinuteDisplayTime';
 }
